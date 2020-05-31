@@ -56,14 +56,17 @@ def imageform(cyclelist):
     for cycle in cyclelist:
         p=cycle[-1]
         for e in cycle:
-            if p>len(cycle):
+            print("p:",p)
+            if p>len(imagelist):
                 imagelist.extend([0]*(p-len(imagelist)))
+            print("len:",len(imagelist))
             imagelist[p-1]=e
             p=e
     for i in range(len(imagelist)):
         if imagelist[i]==0:
             imagelist[i]=i+1
-    return(imagelist)
+    return(tuple(imagelist))
+    #imageform([[1,2,3]])
 
 def dict_from_cycleform(cyclelist):
     permdict={}
