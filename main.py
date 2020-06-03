@@ -14,11 +14,13 @@ def compose(imagelist1,imagelist2):
         il1=imagelist1
         il2=imagelist2
     elif len(imagelist1)<len(imagelist2):
-        il1=[imagelist1[i] if i<len(imagelist1) else i+1 for i in range(len(imagelist2))]
+        il1=[imagelist1[i] if i<len(imagelist1) else i+1 
+            for i in range(len(imagelist2))]
         il2=imagelist2
     elif len(imagelist2)<len(imagelist1):
         il1=imagelist1
-        il2=[imagelist2[i] if i<len(imagelist2) else i +1 for i in range(len(imagelist1))]
+        il2=[imagelist2[i] if i<len(imagelist2) else i+1 
+            for i in range(len(imagelist1))]
     # compose lists
     result=[0]*len(il1)
     for i in range(len(il1)):
@@ -82,22 +84,6 @@ def imageform(cyclelist):
     return(tuple(imagelist))
     #imageform([[1,2,3]])
 
-def dict_from_cycleform(cyclelist):
-    permdict={}
-    for cycle in cyclelist:
-        p=cycle[-1]
-        for e in cycle:
-            permdict[p]=e
-            p=e
-    return(permdict)
-
-def dict_from_imageform(imagelist):
-    permdict={}
-    for i in range(len(imagelist)):
-        if imagelist[i]!=i+1:
-            permdict[i+1]=imagelist[i]
-    return(permdict)
-  
 def subgroup(generators):
     generated=set([()])
     fringe=set([()])
@@ -136,6 +122,33 @@ def centralizer(group):
             centralgroup.add(compose(compose(a,b),compose(inva,invb)))
     return(centralgroup)
 
+def quotientgroup(group, normalgroup):
+    homomorphism={}
+    coset=[]
+    mygroup=group.copy()
+    #first=True
+    while mygroup:
+        # if not first:
+        #     g=mygroup.pop()
+        # else:
+        #     first=False 
+        #     g=()
+        g=mygroup.pop()
+        coset.append({compose(g,n) for n in normalgroup})
+        k=len(coset)
+        homomorphism.update({x:k for x in coset[-1]})
+        mygroup=mygroup.difference(coset[-1])
+    homomorphic_group=set()
+    for coset_a in coset:
+        imagelist=[]
+        for a in coset_a:
+            break
+        for coset_b in coset:
+            for b in coset_b:
+                break
+            imagelist.append(homomorphism[compose(a,b)])
+        homomorphic_group.add(normalize(imagelist))
+    return(homomorphic_group,coset,homomorphism)
 
 
 p=imageform
@@ -161,9 +174,13 @@ print("of order:",len(sg))
 nl=normalizer([(2, 1)],sg) #6
 print("normalizer:",nl) 
 print("of order:",len(nl))
+fg=quotientgroup(sg,nl)
+print("factorgroup:",fg[0])
 nl=normalizer([(1, 2, 5, 4, 6, 3)],sg) #3
 print("normalizer:",nl) 
 print("of order:",len(nl))
+fg=quotientgroup(sg,nl)
+print("factorgroup:",fg[0])
 nl=normalizer([(2, 8, 5, 4, 6, 3, 7, 1)],sg) #9
 print("normalizer:",nl) 
 print("of order:",len(nl))
@@ -178,4 +195,7 @@ print("center:",centralizer(sg))
 
 sg=subgroup([p([(1,2)]),p([(1,3)]),p([(1,4)])])
 print(len(sg))
-print("center:",len(centralizer(sg)))
+cl=centralizer(sg)
+print("center:",len(cl))
+fg=quotientgroup(sg,cl)
+print("factorgroup:",fg[0])
