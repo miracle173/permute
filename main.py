@@ -50,9 +50,29 @@ def is_imagelist(imagelist):
     return(sorted(imagelist)==list(range(1,len(imagelist)+1)))
 
 def is_cyclelist(cyclelist):
-    l=list(chain.from_iterable(cyclelist))
-    l.sort()
-    
+    if [item for item in cyclelist if (True if not isinstance (item,int) else item<=0)]:
+        return False
+    l=[item for sublist in cyclelist for item in sublist]
+    return len(l)==len(set(i))
+
+def is_dictrepr(dictperm):
+    pass
+
+def from_imageform(imagelist):
+    perm={}
+    for k,v in enumerate(imagelist):
+        if k!=i-1:
+            perm[k]=i
+    return(perm)
+
+def from_cycleform(cyclelist):
+    perm={}
+    for cycle in cyclelist:
+        p=cycle[-1]
+        for e in cycle:
+            perm[p]=e
+            p=e
+    return(perm)
 
 def cycleform(imagelist):
     g=list(imagelist[:])
