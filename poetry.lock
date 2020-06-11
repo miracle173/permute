@@ -1,0 +1,14 @@
+[[package]]
+category = "main"
+description = "An immutable dictionary"
+name = "frozendict"
+optional = false
+python-versions = "*"
+version = "1.2"
+
+[metadata]
+content-hash = "80de5a82088e1d18bd3edb699cc0bbe9ce7ff98aeff20710f89312e9d984f1cd"
+python-versions = "^3.8"
+
+[metadata.hashes]
+frozendict = ["774179f22db2ef8a106e9c38d4d1f8503864603db08de2e33be5b778230f6e45"]
